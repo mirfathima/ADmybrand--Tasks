@@ -66,6 +66,49 @@ All colors MUST be HSL.
     --glow-primary: 0 0 20px hsla(var(--primary), 0.5);
     --glow-secondary: 0 0 20px hsla(var(--secondary), 0.5);
   }
+
+  /* Light theme */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+    --glass: 240 10% 95%;
+    --glass-border: 240 10% 85%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    --primary: 260 85% 55%;
+    --primary-glow: 260 90% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 180 85% 45%;
+    --secondary-glow: 180 90% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 10% 92%;
+    --muted-foreground: 240 10% 40%;
+
+    --accent: 220 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 85%;
+    --input: 240 10% 90%;
+    --ring: 260 85% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(260 85% 95%), hsl(220 90% 95%), hsl(180 85% 95%));
+    --gradient-card: linear-gradient(135deg, hsl(240 10% 98%), hsl(240 10% 96%));
+    
+    --glass-bg: hsla(240, 10%, 95%, 0.9);
+    --glass-border: hsla(240, 10%, 85%, 0.5);
+    --glass-shadow: 0 8px 32px hsla(260, 85%, 50%, 0.15);
+  }
 }
 
 @layer base {
@@ -77,6 +120,12 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     background: var(--gradient-hero);
     min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .light body,
+  .light {
+    background: var(--gradient-hero);
   }
 
   /* Glassmorphism utility classes */

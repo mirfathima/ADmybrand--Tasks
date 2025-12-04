@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button"
 import { GlassCard } from "@/components/ui/glass-card"
 import { motion } from "framer-motion"
 import { Check, Star, Crown, Rocket } from "lucide-react"
+import { Link } from "react-router-dom"
+import { toast } from "sonner"
 
 const PricingSection = () => {
   const plans = [
@@ -60,6 +62,14 @@ const PricingSection = () => {
       ]
     }
   ]
+
+  const handlePlanSelect = (planName: string) => {
+    if (planName === "Enterprise") {
+      toast.info("Our sales team will contact you shortly!")
+    } else {
+      toast.success(`Starting ${planName} free trial...`)
+    }
+  }
 
   return (
     <section id="pricing" className="py-24 px-4">
@@ -130,13 +140,27 @@ const PricingSection = () => {
                   </div>
 
                   {/* CTA */}
-                  <Button 
-                    className="w-full" 
-                    variant={plan.popular ? "hero" : "outline"}
-                    size="lg"
-                  >
-                    {plan.name === "Enterprise" ? "Contact Sales" : "Start Free Trial"}
-                  </Button>
+                  {plan.name === "Enterprise" ? (
+                    <Button 
+                      className="w-full" 
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handlePlanSelect(plan.name)}
+                    >
+                      Contact Sales
+                    </Button>
+                  ) : (
+                    <Link to="/dashboard" className="block">
+                      <Button 
+                        className="w-full" 
+                        variant={plan.popular ? "hero" : "outline"}
+                        size="lg"
+                        onClick={() => handlePlanSelect(plan.name)}
+                      >
+                        Start Free Trial
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </GlassCard>
             </motion.div>

@@ -5,39 +5,70 @@ import { GlassCard } from "@/components/ui/glass-card"
 import { motion } from "framer-motion"
 import { Mail, Phone, MapPin, Send } from "lucide-react"
 import { useState } from "react"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 
 const ContactForm = () => {
-  const { toast } = useToast()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
     message: ''
   })
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+    
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required"
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email"
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required"
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters"
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      toast.error("Please fix the errors in the form")
+      return
+    }
+    
     setIsSubmitting(true)
 
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    toast({
-      title: "Message sent successfully!",
-      description: "We'll get back to you within 24 hours.",
-    })
+    toast.success("Message sent successfully! We'll get back to you within 24 hours.")
 
     setFormData({ name: '', email: '', company: '', message: '' })
     setIsSubmitting(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: value
     }))
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }))
+    }
   }
 
   return (
@@ -125,9 +156,9 @@ const ContactForm = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
-                      required
-                      className="glass-card border-glass-border bg-transparent"
+                      className={`glass-card border-glass-border bg-transparent ${errors.name ? 'border-red-500' : ''}`}
                     />
+                    {errors.name && <p className="text-sm text-red-400 mt-1">{errors.name}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">
@@ -139,9 +170,9 @@ const ContactForm = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@company.com"
-                      required
-                      className="glass-card border-glass-border bg-transparent"
+                      className={`glass-card border-glass-border bg-transparent ${errors.email ? 'border-red-500' : ''}`}
                     />
+                    {errors.email && <p className="text-sm text-red-400 mt-1">{errors.email}</p>}
                   </div>
                 </div>
 
@@ -168,9 +199,9 @@ const ContactForm = () => {
                     onChange={handleChange}
                     placeholder="Tell us about your project and how we can help..."
                     rows={5}
-                    required
-                    className="glass-card border-glass-border bg-transparent resize-none"
+                    className={`glass-card border-glass-border bg-transparent resize-none ${errors.message ? 'border-red-500' : ''}`}
                   />
+                  {errors.message && <p className="text-sm text-red-400 mt-1">{errors.message}</p>}
                 </div>
 
                 <Button 
