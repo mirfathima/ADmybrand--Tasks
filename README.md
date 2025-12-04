@@ -10,7 +10,7 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4cff6d8d-ae0a-4332-9ff3-be46d88cde58) and start prompting.
+Simply visit the [Lovable Project](https://lovable.dev/projects/4cff6d8d-ae0a-4332-9ff3-be46d88cde58) and start prompting.  Demo link: https://admybrandashboard.netlify.app/
 
 Changes made via Lovable will be committed automatically to this repo.
 
